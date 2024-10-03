@@ -65,7 +65,7 @@ public:
     int fordFulkerson(int s, int t)
     {
         int max_flow = 0;
-        while (bfs(s, t))
+        while (dfs(s, t))
         {
             int path_flow = INT_MAX;
             for (int v = t; v != s; v = parent[v])
@@ -103,29 +103,19 @@ public:
         return max_flow;
     }
 
-    bool dfs(int s, int t)
+   bool dfs(int u, int t)
     {
-        fill(parent.begin(), parent.end(), -1);
-        queue<int> q;
-        q.push(s);
-        parent[s] = -2;
+        if (u == t) return true;
 
-        while (!q.empty())
+        for (int v = 0; v < V; v++)
         {
-            int u = q.front();
-            q.pop();
 
-            for (Edge &e : adj[u])
+            if (parent[v] == -1 && capacity[u][v] - flow[u][v] > 0)
             {
-                int v = e.to;
-                if (parent[v] == -1 && e.capacity - e.flow > 0)
+                parent[v] = u;
+                if (dfs(v, t))
                 {
-                    parent[v] = u;
-                    q.push(v);
-                    if (v == t)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
@@ -137,7 +127,7 @@ public:
     int edmondKarps(int s, int t)
     {
         int max_flow = 0;
-        while (dfs(s, t))
+        while (bfs(s, t))
         {
             int path_flow = INT_MAX;
             for (int v = t; v != s; v = parent[v])
@@ -243,7 +233,7 @@ public:
     int fordFulkerson(int s, int t)
     {
         int max_flow = 0;
-        while (bfs(s, t))
+        while (dfs(s, t))
         {
             int path_flow = INT_MAX;
             for (int v = t; v != s; v = parent[v])
@@ -293,7 +283,7 @@ public:
             parent[s] = -2;
 
 
-            if (!dfs(s, t)) break;
+            if (!bfs(s, t)) break;
 
             int path_flow = INT_MAX;
 
